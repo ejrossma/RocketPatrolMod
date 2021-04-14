@@ -101,10 +101,26 @@ class Play extends Phaser.Scene {
                 top: 5,
                 bottom: 5,
             },
-            fixedWidth: 100
+            fixedWidth: 185
+        }
+
+        let fireConfig = {
+            fontFamily: 'Courier',
+            fontSize: '28px',
+            backgroundColor: '#F3B141',
+            color: '#843605',
+            align: 'right',
+            padding: {
+                top: 5,
+                bottom: 5,
+            },
+            fixedWidth: 105
         }
         this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding * 2, 
-        this.p1Score, scoreConfig);
+        `SCORE: ${this.p1Score}`, scoreConfig);
+
+        this.firetext = this.add.text(borderUISize + borderPadding + 256, borderUISize + borderPadding * 2,
+        'FIRING', fireConfig);
         
         //GAME OVER flag
         this.gameOver = false;
@@ -112,6 +128,8 @@ class Play extends Phaser.Scene {
         //60 second play clock
         scoreConfig.fixedWidth = 0;
         this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
+            if (this.p1Score > highscore) { highscore = this.p1Score; }
+            this.add.text(game.config.width/2, game.config.height/2 - 64, `HIGH SCORE: ${highscore}`, scoreConfig).setOrigin(0.5);
             this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
             this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or ← for Menu', scoreConfig).setOrigin(0.5);
             this.gameOver = true;
@@ -125,10 +143,12 @@ class Play extends Phaser.Scene {
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT)) {
             this.scene.start('menuScene');
         }
-        this.starfield.tilePositionX -= starspeed;
-
+        
         if (!this.gameOver) {
-            // update rocket
+            //update background
+            this.starfield.tilePositionX -= starspeed;
+
+            //update rocket
             this.p1Rocket.update();
 
             //update spaceship
@@ -138,6 +158,9 @@ class Play extends Phaser.Scene {
 
             //update smallspaceship
             this.smallship.update();
+
+            //check if firing
+            if (this.p1Rocket.isFiring) { this.firetext.alpha = 1; } else { this.firetext.alpha = 0; }
         }
 
         //check collision
@@ -183,7 +206,7 @@ class Play extends Phaser.Scene {
             boom.destroy();
         });
         this.p1Score += ship.points;
-        this.scoreLeft.text = this.p1Score;
+        this.scoreLeft.text = `SCORE: ${this.p1Score}`;
         this.sound.play('sfx_explosion');
     }
 
@@ -199,7 +222,7 @@ class Play extends Phaser.Scene {
             boom.destroy();
         });
         this.p1Score += ship.points;
-        this.scoreLeft.text = this.p1Score;
+        this.scoreLeft.text = `SCORE: ${this.p1Score}`;
         this.sound.play('sfx_explosion');        
     }
 }
