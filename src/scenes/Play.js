@@ -14,6 +14,7 @@ class Play extends Phaser.Scene {
         this.load.image('spaceship', './assets/spaceship.png');
         this.load.image('starfield', './assets/starfield.png');
         this.load.image('smallspaceship', './assets/smallspaceship.png');
+        this.load.image('banner', './assets/banner.png');
 
         this.load.spritesheet('explosion', './assets/explosion.png', {
             frameWidth: 64,
@@ -30,12 +31,13 @@ class Play extends Phaser.Scene {
     }
 
     create() { //whatever is made first gets put furthest back
-        //scrolling starfield
+        //scrolling background
         this.starfield = this.add.tileSprite(0, 0, game.config.width, game.config.height,
         'starfield').setOrigin(0,0);
-        //green UI background
-        this.add.rectangle(0, borderUISize + borderPadding, game.config.width,
-        borderUISize * 2, 0x00FF00).setOrigin(0,0); //x,y, width,height
+
+        //banner background
+        this.add.sprite(0, borderUISize, 'banner').setOrigin(0,0); //x,y, width,height
+
         //white borders
         this.add.rectangle(0, 0, game.config.width, borderUISize, 0xFFFFFF).setOrigin(0,0);
         this.add.rectangle(0, game.config.height - borderUISize, game.config.width, 
