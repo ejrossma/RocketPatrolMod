@@ -15,6 +15,7 @@ class Play extends Phaser.Scene {
         this.load.image('starfield', './assets/starfield.png');
         this.load.image('smallspaceship', './assets/smallspaceship.png');
         this.load.image('banner', './assets/banner.png');
+        this.load.image('title', './assets/final_title_fp.png');
 
         this.load.spritesheet('explosion', './assets/explosion.png', {
             frameWidth: 64,
@@ -37,6 +38,9 @@ class Play extends Phaser.Scene {
 
         //banner background
         this.add.sprite(0, borderUISize, 'banner').setOrigin(0,0); //x,y, width,height
+
+        //title on top of banner
+        this.add.sprite(game.config.width/4, borderUISize + borderPadding - 4, 'title').setOrigin(0,0);
 
         //white borders
         this.add.rectangle(0, 0, game.config.width, borderUISize, 0xFFFFFF).setOrigin(0,0);
@@ -95,33 +99,32 @@ class Play extends Phaser.Scene {
 
         let scoreConfig = {
             fontFamily: 'Courier',
-            fontSize: '28px',
+            fontSize: '20px',
             backgroundColor: '#F3B141',
             color: '#843605',
-            align: 'right',
+            align: 'center',
             padding: {
                 top: 5,
                 bottom: 5,
-            },
-            fixedWidth: 185
+            }
         }
 
         let fireConfig = {
             fontFamily: 'Courier',
-            fontSize: '28px',
+            fontSize: '22px',
             backgroundColor: '#F3B141',
             color: '#843605',
-            align: 'right',
+            align: 'center',
             padding: {
                 top: 5,
                 bottom: 5,
             },
-            fixedWidth: 105
+            fixedWidth: 80
         }
-        this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding * 2, 
-        `SCORE: ${this.p1Score}`, scoreConfig);
+        this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding + 7, 
+        `PTS: ${this.p1Score}`, scoreConfig);
 
-        this.firetext = this.add.text(borderUISize + borderPadding + 256, borderUISize + borderPadding * 2,
+        this.firetext = this.add.text(game.config.width - borderUISize - borderPadding * 9, borderUISize + borderPadding + 7,
         'FIRING', fireConfig);
         
         //GAME OVER flag
@@ -208,7 +211,7 @@ class Play extends Phaser.Scene {
             boom.destroy();
         });
         this.p1Score += ship.points;
-        this.scoreLeft.text = `SCORE: ${this.p1Score}`;
+        this.scoreLeft.text = `PTS: ${this.p1Score}`;
         this.sound.play('sfx_explosion');
     }
 
@@ -224,7 +227,7 @@ class Play extends Phaser.Scene {
             boom.destroy();
         });
         this.p1Score += ship.points;
-        this.scoreLeft.text = `SCORE: ${this.p1Score}`;
+        this.scoreLeft.text = `PTS: ${this.p1Score}`;
         this.sound.play('sfx_explosion');        
     }
 }
