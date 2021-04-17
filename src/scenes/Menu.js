@@ -13,8 +13,16 @@ class Menu extends Phaser.Scene {
         this.load.audio('sfx_select', './assets/blip_select12.wav');
         this.load.audio('sfx_explosion', './assets/explosion38.wav');
         this.load.audio('sfx_rocket', './assets/rocket_shot.wav');
+        //load images
+        this.load.image('title', './assets/final_title_fp.png');
+        this.load.image('background', './assets/menu_background.png');
     }
     create() {
+        //add background
+        this.add.image(0, 0, 'background').setOrigin(0,0);
+        //add title
+        this.add.image(game.config.width/2, game.config.height/2, 'title').setOrigin(0.5);
+
         let menuConfig = {
             fontFamily: 'Courier',
             fontSize: '28px',
@@ -29,11 +37,9 @@ class Menu extends Phaser.Scene {
         }
 
         //show menu text
-        this.add.text(game.config.width/2, game.config.height/2 - borderUISize - borderPadding, 'ROCKET PATROL', menuConfig).setOrigin(0.5);
-        this.add.text(game.config.width/2, game.config.height/2, 'Use ← → arrows to move & (F) to fire', menuConfig).setOrigin(0.5);
-        menuConfig.backgroundColor = '#00FF00';
-        menuConfig.color = '#000';
-        this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding, 'Press ← for Novice or → for Expert', menuConfig).setOrigin(0.5);
+        //this.add.text(game.config.width/2, game.config.height/2 - borderUISize - borderPadding, 'ROCKET PATROL', menuConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2 - borderUISize - borderPadding - 25, 'Use ← → arrows to aim & (F) to fire', menuConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding + 25, 'Press ← for Easy or → for Hard', menuConfig).setOrigin(0.5);
 
         //define keys
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
@@ -44,7 +50,7 @@ class Menu extends Phaser.Scene {
         if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
             //easy mode
             game.settings = {
-                spaceshipSpeed: 2,
+                spaceshipSpeed: 1,
                 smallSpaceshipSpeed: 1,
                 gameTimer: 60000
             }
@@ -54,7 +60,7 @@ class Menu extends Phaser.Scene {
         if (Phaser.Input.Keyboard.JustDown(keyRIGHT)) {
             //easy mode
             game.settings = {
-                spaceshipSpeed: 3,
+                spaceshipSpeed: 2,
                 smallSpaceshipSpeed: 2,
                 gameTimer: 45000
             }
