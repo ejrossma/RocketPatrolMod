@@ -1,9 +1,9 @@
-class Spaceship extends Phaser.GameObjects.Sprite {
+class Bird extends Phaser.GameObjects.Sprite {
     constructor(scene, x, y, texture, frame, pointValue, speed) {
         super(scene, x, y, texture, frame);
         scene.add.existing(this); //add to scene
         this.points = pointValue; //store pointValue
-        this.movespeed = game.settings.spaceshipSpeed * speed; //pixels per frame
+        this.movespeed = game.settings.birdSpeed * speed; //pixels per frame
         this.dir = Phaser.Math.Between(0,1); //choose a random direction
         this.reset();
     }
@@ -28,10 +28,10 @@ class Spaceship extends Phaser.GameObjects.Sprite {
         this.dir = Phaser.Math.Between(0,1);
         //moving left
         if (this.dir == 1) {
-            this.x = game.config.width;
+            this.x = game.config.width + 5;
             this.flipX = false;
         } else { //moving right
-            this.x = 0;
+            this.x = 0 - 5;
             this.flipX = true;
         }   
     }

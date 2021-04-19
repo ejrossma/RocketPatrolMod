@@ -1,9 +1,9 @@
-class SmallSpaceship extends Phaser.GameObjects.Sprite {
+class UFO extends Phaser.GameObjects.Sprite {
     constructor(scene, x, y, texture, frame, pointValue) {
         super(scene, x, y, texture, frame);
         scene.add.existing(this); //add to scene
         this.points = pointValue; //store pointValue
-        this.movespeed = game.settings.smallSpaceshipSpeed; //pixels per frame
+        this.movespeed = game.settings.ufoSpeed; //pixels per frame
         this.count = 0; //when to change direction
         this.upwards = -1; //y direction
         this.dir = Phaser.Math.Between(0,1); //choose a random x direction

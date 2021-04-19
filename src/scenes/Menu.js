@@ -11,8 +11,17 @@ class Menu extends Phaser.Scene {
     preload() {
         //load audio
         this.load.audio('sfx_select', './assets/blip_select12.wav');
-        this.load.audio('sfx_explosion', './assets/explosion38.wav');
-        this.load.audio('sfx_rocket', './assets/rocket_shot.wav');
+        //gun
+        this.load.audio('sfx_gun', './assets/gun_shoot.wav');
+        //ufo explosions
+        this.load.audio('sfx_ufo_explode1', './assets/ufo_explode1.wav');        
+        this.load.audio('sfx_ufo_explode2', './assets/ufo_explode2.wav');
+        this.load.audio('sfx_ufo_explode3', './assets/ufo_explode3.wav');
+        //bird hit
+        this.load.audio('sfx_hit_bird1', './assets/hit_bird1.wav');
+        this.load.audio('sfx_hit_bird2', './assets/hit_bird2.wav');
+        this.load.audio('sfx_hit_bird3', './assets/hit_bird3.wav');
+        
         //load images
         this.load.image('title', './assets/final_title_fp.png');
         this.load.image('background', './assets/menu_background.png');
@@ -50,8 +59,8 @@ class Menu extends Phaser.Scene {
         if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
             //easy mode
             game.settings = {
-                spaceshipSpeed: 1,
-                smallSpaceshipSpeed: 1,
+                birdSpeed: 1,
+                ufoSpeed: 1,
                 gameTimer: 60000
             }
             this.sound.play('sfx_select');
@@ -60,8 +69,8 @@ class Menu extends Phaser.Scene {
         if (Phaser.Input.Keyboard.JustDown(keyRIGHT)) {
             //easy mode
             game.settings = {
-                spaceshipSpeed: 2,
-                smallSpaceshipSpeed: 2,
+                birdSpeed: 2,
+                ufoSpeed: 2,
                 gameTimer: 45000
             }
             this.sound.play('sfx_select');

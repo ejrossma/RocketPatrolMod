@@ -11,11 +11,13 @@ class Play extends Phaser.Scene {
     preload() {
         // load images + tile sprites
         this.load.image('rocket', './assets/rocket.png'); //key + file location
-        this.load.image('spaceship', './assets/spaceship.png');
+        this.load.image('bird1', './assets/spaceship.png');
         this.load.image('cornfield', './assets/farm_patrol_bck.png');
-        this.load.image('smallspaceship', './assets/smallspaceship.png');
+        this.load.image('sky', './assets/sky_back.png');
+        this.load.image('ufo', './assets/smallspaceship.png');
         this.load.image('banner', './assets/banner.png');
         this.load.image('title', './assets/final_title_fp.png');
+        this.load.image('tomato', './assets/tomato.png');
 
         this.load.spritesheet('explosion', './assets/explosion.png', {
             frameWidth: 64,
@@ -33,7 +35,8 @@ class Play extends Phaser.Scene {
 
     create() { //whatever is made first gets put furthest back
         //scrolling background
-        this.starfield = this.add.image(borderUISize, borderUISize + borderPadding + 10, 'cornfield').setOrigin(0,0);
+        this.sky = this.add.tileSprite(borderUISize, borderUISize + borderPadding + 5, 576, 175, 'sky').setOrigin(0,0);
+        this.cornfield = this.add.image(borderUISize, borderUISize + borderPadding + 10, 'cornfield').setOrigin(0,0);
 
         //banner background
         this.add.image(0, borderUISize, 'banner').setOrigin(0,0); //x,y, width,height
@@ -45,13 +48,19 @@ class Play extends Phaser.Scene {
         this.p1Rocket = new Rocket(this, game.config.width/2, game.config.height - 
         borderUISize - borderPadding, 'rocket').setOrigin(0.5, 0);
 
-        //add spaceship (x3)
-        this.ship01 = new Spaceship(this, 0, borderUISize * 4, 'spaceship', 0, 50, 2).setOrigin(0,0);
-        this.ship02 = new Spaceship(this, 0, borderUISize * 5 + borderPadding * 2, 'spaceship', 0, 20, 1.5).setOrigin(0,0);
-        this.ship03 = new Spaceship(this, 0, borderUISize * 6 + borderPadding * 4, 'spaceship', 0, 10, 1.25).setOrigin(0,0);
+        //add birds (x3)
+        this.bird01 = new Bird(this, 0, borderUISize * 4, 'bird1', 0, 50, 2).setOrigin(0,0);
+        this.bird02 = new Bird(this, 0, borderUISize * 5 + borderPadding * 2, 'bird1', 0, 20, 1.5).setOrigin(0,0);
+        this.bird03 = new Bird(this, 0, borderUISize * 6 + borderPadding * 4, 'bird1', 0, 10, 1.25).setOrigin(0,0);
 
-        //add smallspaceship
-        this.smallship = new SmallSpaceship(this, 0, borderUISize * 4, 'smallspaceship', 0, 30).setOrigin(0,0);
+        //add ufo
+        this.ufo = new UFO(this, 0, borderUISize * 4, 'ufo', 0, 30).setOrigin(0,0);
+
+        //add tomatoes
+        this.tomato1 = new Tomato(this, 65, 370, 'tomato', 0).setOrigin(0,0);
+        this.tomato2 = new Tomato(this, 175, 370, 'tomato', 0).setOrigin(0,0);
+        this.tomato3 = new Tomato(this, 392, 370, 'tomato', 0).setOrigin(0,0);
+        this.tomato4 = new Tomato(this, 500, 368, 'tomato', 0).setOrigin(0,0);
         
 
         //define keys
@@ -96,23 +105,12 @@ class Play extends Phaser.Scene {
             }
         }
 
-        let fireConfig = {
-            fontFamily: 'Courier',
-            fontSize: '22px',
-            backgroundColor: '#F3B141',
-            color: '#843605',
-            align: 'center',
-            padding: {
-                top: 5,
-                bottom: 5,
-            },
-            fixedWidth: 80
-        }
-        this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding + 7, 
+        //points
+        this.scoreLeft = this.add.text(borderUISize + borderPadding * 2, borderUISize + borderPadding + 7, 
         `PTS: ${this.p1Score}`, scoreConfig);
 
-        this.firetext = this.add.text(game.config.width - borderUISize - borderPadding * 9, borderUISize + borderPadding + 7,
-        'FIRING', fireConfig);
+        //timer
+        this.timeText = this.add.text(game.config.width - borderUISize - borderPadding * 10, borderUISize + borderPadding + 7, `Time: ${game.settings.gameTimer/1000}`, scoreConfig);
         
         //GAME OVER flag
         this.gameOver = false;
@@ -124,6 +122,7 @@ class Play extends Phaser.Scene {
             this.add.text(game.config.width/2, game.config.height/2 - 64, `HIGH SCORE: ${highscore}`, scoreConfig).setOrigin(0.5);
             this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
             this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or ← for Menu', scoreConfig).setOrigin(0.5);
+            this.timeText.text = 'Time: 0';
             this.gameOver = true;
         }, null, this);
 
@@ -136,6 +135,7 @@ class Play extends Phaser.Scene {
         this.add.rectangle(0, 0, borderUISize, game.config.height, 0x795548).setOrigin(0,0);
         this.add.rectangle(game.config.width - borderUISize, 0, borderUISize, 
         game.config.height, 0x795548).setOrigin(0,0);
+        
     }
 
     update() {
@@ -147,84 +147,109 @@ class Play extends Phaser.Scene {
         }
         
         if (!this.gameOver) {
+            //update timer
+            var actualTime = Math.floor(this.clock.getElapsedSeconds());
+            this.timeText.text = `Time: ${(game.settings.gameTimer/1000) - actualTime}`;
+            
             //update background
-            this.starfield.tilePositionX -= starspeed;
+            this.sky.tilePositionX -= starspeed/8;
 
             //update rocket
             this.p1Rocket.update();
 
             //update spaceship
-            this.ship01.update();
-            this.ship02.update();
-            this.ship03.update();
+            this.bird01.update();
+            this.bird02.update();
+            this.bird03.update();
 
-            //update smallspaceship
-            this.smallship.update();
-
-            //check if firing
-            if (this.p1Rocket.isFiring) { this.firetext.alpha = 1; } else { this.firetext.alpha = 0; }
+            //update UFO
+            this.ufo.update();
         }
 
         //check collision
-        if (this.checkCollision(this.p1Rocket, this.ship01)) {
+        if (this.checkCollision(this.p1Rocket, this.bird01)) {
             this.p1Rocket.reset();
-            this.shipExplode(this.ship01);
+            this.birdHit(this.bird01);
         }
-        if (this.checkCollision(this.p1Rocket, this.ship02)) {
+        if (this.checkCollision(this.p1Rocket, this.bird02)) {
             this.p1Rocket.reset();
-            this.shipExplode(this.ship02);
+            this.birdHit(this.bird02);
         }
-        if (this.checkCollision(this.p1Rocket, this.ship03)) {
+        if (this.checkCollision(this.p1Rocket, this.bird03)) {
             this.p1Rocket.reset();
-            this.shipExplode(this.ship03);
+            this.birdHit(this.bird03);
         }
-        if (this.checkCollision(this.p1Rocket, this.smallship)) {
+        if (this.checkCollision(this.p1Rocket, this.ufo)) {
             this.p1Rocket.reset();
-            this.shipSmallExplode(this.smallship);
+            this.shipSmallExplode(this.ufo);
         }
     }
 
-    checkCollision(rocket, ship) {
+    checkCollision(bullet, vessel) {
         //simple AABB checking
-        if (rocket.x < ship.x + ship.width &&
-            rocket.x + rocket.width > ship.x &&
-            rocket.y < ship.y + ship.height &&
-            rocket.height + rocket.y > ship.y) {
+        if (bullet.x < vessel.x + vessel.width &&
+            bullet.x + bullet.width > vessel.x &&
+            bullet.y < vessel.y + vessel.height &&
+            bullet.height + bullet.y > vessel.y) {
                 return true
         } else {
             return false;
         }
     }
 
-    shipExplode(ship) {
-        //temporarily hide the ship
-        ship.alpha = 0;
+    birdHit(bird) {
+        //temporarily hide the bird
+        bird.alpha = 0;
         //create explosion sprite
-        let boom = this.add.sprite(ship.x, ship.y, 'explosion').setOrigin(0, 0);
+        let boom = this.add.sprite(bird.x, bird.y, 'explosion').setOrigin(0, 0);
         boom.anims.play('explode');
         boom.on('animationcomplete', () => {
-            ship.reset();
-            ship.alpha = 1;
+            bird.reset();
+            bird.alpha = 1;
             boom.destroy();
         });
-        this.p1Score += ship.points;
+        this.p1Score += bird.points;
         this.scoreLeft.text = `PTS: ${this.p1Score}`;
-        this.sound.play('sfx_explosion');
+        this.birdSound();
     }
 
-    shipSmallExplode(ship) {
-        //temporarily hide the ship
-        ship.alpha = 0;
+    shipSmallExplode(ufo) {
+        //temporarily hide the ufo
+        ufo.alpha = 0;
         //create explosion sprite
-        let boom = this.add.sprite(ship.x, ship.y, 'smallexplosion').setOrigin(0, 0);
+        let boom = this.add.sprite(ufo.x, ufo.y, 'smallexplosion').setOrigin(0, 0);
         boom.anims.play('smallexplode');
         boom.on('animationcomplete', () => {
-            ship.reset();
-            ship.alpha = 1;
+            ufo.reset();
+            ufo.alpha = 1;
             boom.destroy();
         });
-        this.p1Score += ship.points;
+        this.p1Score += ufo.points;
         this.scoreLeft.text = `PTS: ${this.p1Score}`;
-        this.sound.play('sfx_explosion');        
+        this.ufoSound();       
+    }
+
+    birdSound() {
+        var num = Phaser.Math.Between(0,2);
+        switch (num) {
+            case 0:
+                this.sound.play('sfx_hit_bird1');
+            case 1:
+                this.sound.play('sfx_hit_bird2');
+            case 2:
+                this.sound.play('sfx_hit_bird3');
+        }
+    }
+
+    ufoSound() {
+        var num = Phaser.Math.Between(0,2);
+        switch (num) {
+            case 0:
+                this.sound.play('sfx_ufo_explode1');
+            case 1:
+                this.sound.play('sfx_ufo_explode2');
+            case 2:
+                this.sound.play('sfx_ufo_explode3');
+        }
     }
 }
