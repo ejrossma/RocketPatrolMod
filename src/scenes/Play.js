@@ -166,10 +166,10 @@ class Play extends Phaser.Scene {
             this.ufo.update();
 
             //update tomatoes
-            this.tomato1.update();
-            this.tomato2.update();
-            this.tomato3.update();
-            this.tomato4.update();
+            this.tomato1.update(actualTime);
+            this.tomato2.update(actualTime);
+            this.tomato3.update(actualTime);
+            this.tomato4.update(actualTime);
         }
 
         //check collision

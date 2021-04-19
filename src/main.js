@@ -1,6 +1,6 @@
 //Elijah Rossman
 //4/16/21
-//13 Hours so far
+//18 Hours so far
 
 //game configuration
 let config = {
