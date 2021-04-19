@@ -11,19 +11,29 @@ class Play extends Phaser.Scene {
     preload() {
         // load images + tile sprites
         //key + file location
-        this.load.image('bird1', './assets/spaceship.png');
         this.load.image('cornfield', './assets/farm_patrol_bck.png');
         this.load.image('sky', './assets/sky_back.png');
-        this.load.image('ufo', './assets/smallspaceship.png');
         this.load.image('banner', './assets/banner.png');
         this.load.image('title', './assets/final_title_fp.png');
         this.load.image('tomato', './assets/tomato.png');
 
-        this.load.spritesheet('explosion', './assets/explosion.png', {
-            frameWidth: 64,
-            frameHeight: 32,
+        this.load.spritesheet('bird1', './assets/bird_fly_cycle.png', {
+            frameWidth: 48,
+            frameHeight: 48,
             startFrame: 0,
-            endFrame: 9
+            endFrame: 4
+        });
+        this.load.spritesheet('ufo', './assets/simple_ufo.png', {
+            frameWidth: 64,
+            frameHeight: 64,
+            startFrame: 0,
+            endFrame: 2
+        });
+        this.load.spritesheet('poof', './assets/bird_poof.png', {
+            frameWidth: 48,
+            frameHeight: 48,
+            startFrame: 0,
+            endFrame: 2
         });
         this.load.spritesheet('smallexplosion', './assets/smallexplosion.png', {
             frameWidth: 32,
@@ -48,13 +58,39 @@ class Play extends Phaser.Scene {
         this.p1Rocket = new Rocket(this, game.config.width/2, game.config.height - 
         borderUISize - borderPadding, 'rocket').setOrigin(0.5, 0);
 
-        //add birds (x3)
-        this.bird01 = new Bird(this, 0, borderUISize * 4, 'bird1', 0, 50, 2).setOrigin(0,0);
-        this.bird02 = new Bird(this, 0, borderUISize * 5 + borderPadding * 2, 'bird1', 0, 20, 1.5).setOrigin(0,0);
-        this.bird03 = new Bird(this, 0, borderUISize * 6 + borderPadding * 4, 'bird1', 0, 10, 1.25).setOrigin(0,0);
-
         //add ufo
-        this.ufo = new UFO(this, 0, borderUISize * 4, 'ufo', 0, 30).setOrigin(0,0);
+        this.anims.create({
+            key: 'ufo_fly',
+            frames: this.anims.generateFrameNumbers('ufo', {
+                start: 0,
+                end: 2,
+                first: 0
+            }),
+            frameRate: 3,
+            repeat: -1,
+            yoyo: true
+        });
+        this.ufo = new UFO(this, 0, borderUISize * 3, 'ufo', 0, 30).setOrigin(0,0);
+        this.ufo.anims.play('ufo_fly');
+
+        //add birds (x3)
+        this.anims.create({
+            key: 'bird_fly',
+            frames: this.anims.generateFrameNumbers('bird1', {
+                start: 0,
+                end: 4,
+                first: 0
+            }),
+            frameRate: 15,
+            repeat: -1,
+            yoyo: true
+        });
+        this.bird01 = new Bird(this, 0, borderUISize * 4, 'bird1', 0, 50, 2).setOrigin(0,0);
+        this.bird01.anims.play('bird_fly');
+        this.bird02 = new Bird(this, 0, borderUISize * 5 + borderPadding * 2, 'bird1', 0, 20, 1.5).setOrigin(0,0);
+        this.bird02.anims.play('bird_fly');
+        this.bird03 = new Bird(this, 0, borderUISize * 6 + borderPadding * 4, 'bird1', 0, 10, 1.25).setOrigin(0,0);
+        this.bird03.anims.play('bird_fly');
 
         //add tomatoes
         this.tomato1 = new Tomato(this, 65, 370, 'tomato', 0).setOrigin(0,0);
@@ -71,13 +107,14 @@ class Play extends Phaser.Scene {
 
         //animation config
         this.anims.create({
-            key: 'explode',
-            frames: this.anims.generateFrameNumbers('explosion', {
+            key: 'bird_poof',
+            frames: this.anims.generateFrameNumbers('poof', {
                 start: 0,
-                end: 9,
+                end: 2,
                 first: 0
             }),
-            frameRate: 30
+            frameRate: 30,
+            yoyo: true
         });
 
         this.anims.create({
@@ -124,6 +161,7 @@ class Play extends Phaser.Scene {
             this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or ← for Menu', scoreConfig).setOrigin(0.5);
             this.timeText.text = 'Time: 0';
             this.gameOver = true;
+            this.anims.pauseAll();
         }, null, this);
 
         //brown borders
@@ -141,6 +179,7 @@ class Play extends Phaser.Scene {
     update() {
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)) {
             this.scene.restart();
+            this.anims.resumeAll();
         }
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT)) {
             this.scene.start('menuScene');
@@ -208,7 +247,7 @@ class Play extends Phaser.Scene {
         bird.alpha = 0;
         //create explosion sprite
         let boom = this.add.sprite(bird.x, bird.y, 'explosion').setOrigin(0, 0);
-        boom.anims.play('explode');
+        boom.anims.play('bird_poof');
         boom.on('animationcomplete', () => {
             bird.reset();
             bird.alpha = 1;
@@ -223,7 +262,7 @@ class Play extends Phaser.Scene {
         //temporarily hide the ufo
         ufo.alpha = 0;
         //create explosion sprite
-        let boom = this.add.sprite(ufo.x, ufo.y, 'smallexplosion').setOrigin(0, 0);
+        let boom = this.add.sprite(ufo.x + 16, ufo.y + 16, 'smallexplosion').setOrigin(0, 0);
         boom.anims.play('smallexplode');
         boom.on('animationcomplete', () => {
             ufo.reset();

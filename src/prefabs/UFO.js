@@ -10,6 +10,7 @@ class UFO extends Phaser.GameObjects.Sprite {
         this.reset();
     }
 
+    
     update() {
         //right to left
         if (this.dir == 1) {
@@ -23,9 +24,9 @@ class UFO extends Phaser.GameObjects.Sprite {
         this.y += this.upwards;
         //wrap around from right to left edge
         if (this.x >= game.config.width && this.dir != 1) {
-            this.x = 0 - this.width;
+            this.x = 0 - 16;
         } else if (this.x <= 0 - this.width && this.dir == 1) {
-            this.x = game.config.width;
+            this.x = game.config.width - 16;
         }
     }
 
