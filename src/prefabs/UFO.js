@@ -22,9 +22,9 @@ class UFO extends Phaser.GameObjects.Sprite {
         }
         this.y += this.upwards;
         //wrap around from right to left edge
-        if (this.x >= game.config.width - this.width && this.dir != 1) {
+        if (this.x >= game.config.width && this.dir != 1) {
             this.x = 0 - this.width;
-        } else if (this.x <= 0 && this.dir == 1) {
+        } else if (this.x <= 0 - this.width && this.dir == 1) {
             this.x = game.config.width;
         }
     }

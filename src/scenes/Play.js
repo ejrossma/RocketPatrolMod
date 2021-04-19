@@ -10,7 +10,7 @@ class Play extends Phaser.Scene {
 
     preload() {
         // load images + tile sprites
-        this.load.image('rocket', './assets/rocket.png'); //key + file location
+        //key + file location
         this.load.image('bird1', './assets/spaceship.png');
         this.load.image('cornfield', './assets/farm_patrol_bck.png');
         this.load.image('sky', './assets/sky_back.png');
@@ -60,7 +60,7 @@ class Play extends Phaser.Scene {
         this.tomato1 = new Tomato(this, 65, 370, 'tomato', 0).setOrigin(0,0);
         this.tomato2 = new Tomato(this, 175, 370, 'tomato', 0).setOrigin(0,0);
         this.tomato3 = new Tomato(this, 392, 370, 'tomato', 0).setOrigin(0,0);
-        this.tomato4 = new Tomato(this, 500, 368, 'tomato', 0).setOrigin(0,0);
+        this.tomato4 = new Tomato(this, 500, 370, 'tomato', 0).setOrigin(0,0);
         
 
         //define keys
@@ -164,6 +164,12 @@ class Play extends Phaser.Scene {
 
             //update UFO
             this.ufo.update();
+
+            //update tomatoes
+            this.tomato1.update();
+            this.tomato2.update();
+            this.tomato3.update();
+            this.tomato4.update();
         }
 
         //check collision
