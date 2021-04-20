@@ -157,6 +157,7 @@ class Play extends Phaser.Scene {
             this.timeText.text = 'Time: 0';
             this.gameOver = true;
             this.anims.pauseAll();
+            this.music.stop();
         }, null, this);
 
         //brown borders
@@ -173,12 +174,10 @@ class Play extends Phaser.Scene {
 
     update() {
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)) {
-            this.music.stop();
             this.scene.restart();
             this.anims.resumeAll();
         }
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT)) {
-            this.music.stop();
             this.scene.start('menuScene');
         }
         
