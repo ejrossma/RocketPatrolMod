@@ -15,20 +15,7 @@ class Play extends Phaser.Scene {
         this.load.image('sky', './assets/sky_back.png');
         this.load.image('banner', './assets/banner.png');
         this.load.image('title', './assets/final_title_fp.png');
-        this.load.image('tomato', './assets/tomato.png');
 
-        this.load.spritesheet('bird1', './assets/bird_fly_cycle.png', {
-            frameWidth: 48,
-            frameHeight: 48,
-            startFrame: 0,
-            endFrame: 4
-        });
-        this.load.spritesheet('ufo', './assets/simple_ufo.png', {
-            frameWidth: 64,
-            frameHeight: 64,
-            startFrame: 0,
-            endFrame: 2
-        });
         this.load.spritesheet('poof', './assets/bird_poof.png', {
             frameWidth: 48,
             frameHeight: 48,
@@ -41,9 +28,14 @@ class Play extends Phaser.Scene {
             startFrame: 0,
             endFrame: 9
         });
+
+        this.load.audio('music', './assets/Farm_patrol_background_music.mp3');
     }
 
     create() { //whatever is made first gets put furthest back
+        //music
+        this.sound.play('music', { loop: -1, volume: 0.25});
+
         //scrolling background
         this.sky = this.add.tileSprite(borderUISize, borderUISize + borderPadding + 5, 576, 175, 'sky').setOrigin(0,0);
         this.cornfield = this.add.image(borderUISize, borderUISize + borderPadding + 10, 'cornfield').setOrigin(0,0);
@@ -85,18 +77,19 @@ class Play extends Phaser.Scene {
             repeat: -1,
             yoyo: true
         });
-        this.bird01 = new Bird(this, 0, borderUISize * 4, 'bird1', 0, 50, 2).setOrigin(0,0);
+        this.bird01 = new Bird(this, 0, borderUISize * 4, 'bird1', 0, 50, 1.75).setOrigin(0,0);
         this.bird01.anims.play('bird_fly');
         this.bird02 = new Bird(this, 0, borderUISize * 5 + borderPadding * 2, 'bird1', 0, 20, 1.5).setOrigin(0,0);
         this.bird02.anims.play('bird_fly');
         this.bird03 = new Bird(this, 0, borderUISize * 6 + borderPadding * 4, 'bird1', 0, 10, 1.25).setOrigin(0,0);
         this.bird03.anims.play('bird_fly');
 
+
         //add tomatoes
-        this.tomato1 = new Tomato(this, 65, 370, 'tomato', 0).setOrigin(0,0);
-        this.tomato2 = new Tomato(this, 175, 370, 'tomato', 0).setOrigin(0,0);
-        this.tomato3 = new Tomato(this, 392, 370, 'tomato', 0).setOrigin(0,0);
-        this.tomato4 = new Tomato(this, 500, 370, 'tomato', 0).setOrigin(0,0);
+        this.tomato1 = new Tomato(this, 90, 400, 'tomato', 0).setOrigin(0,0);
+        this.tomato2 = new Tomato(this, 200, 400, 'tomato', 0).setOrigin(0,0);
+        this.tomato3 = new Tomato(this, 420, 400, 'tomato', 0).setOrigin(0,0);
+        this.tomato4 = new Tomato(this, 525, 400, 'tomato', 0).setOrigin(0,0);
         
 
         //define keys
@@ -242,6 +235,60 @@ class Play extends Phaser.Scene {
         }
     }
 
+    checkTomatoCollision(bird, tomato) {
+        //simple AABB checking
+        if (bird.dir == 1) { //moving left
+
+            if (bird.x < tomato.x + tomato.width && //left of bird to the left of right of tomato
+                bird.x + bird.width > tomato.x + 20 && //right of bird to the right of left of tomato
+                bird.y < tomato.y + tomato.height && //top of bird above the bottom of the tomato
+                bird.height + bird.y > tomato.y + 10) { //bottom of bird below the top of tomato 
+                    return true
+            } else {
+                return false;
+            }
+
+        } else { //moving right
+
+            if (bird.x < tomato.x + tomato.width && //left of bird to the left of right of tomato
+                bird.x + bird.width > tomato.x + 20 && //right of bird to the right of left of tomato
+                bird.y < tomato.y + tomato.height && //top of bird above the bottom of the tomato
+                bird.height + bird.y > tomato.y + 10) { //bottom of bird below the top of tomato
+                    return true
+            } else {
+                return false;
+            }
+
+        }
+        
+    }
+
+    moveTowards(vessel, target) {
+        //this.dir 1 = moving left && this.dir 0 = moving right
+        if (vessel.dir == 1 && vessel.x > target.x) { //moving left and the target is to the left
+            
+            if (target.y - vessel.y > vessel.x - target.x) {
+                vessel.y += 1 + vessel.movespeed/3;
+            } else if (target.y - vessel.y < vessel.x - target.x) {
+                vessel.x -= 1 + vessel.movespeed/3;
+            } else {
+                vessel.x -= 1 + vessel.movespeed/3;
+                vessel.y += 1 + vessel.movespeed/3;
+            }
+
+        } else if (vessel.dir == 0 && vessel.x < target.x) { //moving right and the target is to the right
+            
+            if (target.y - vessel.y > target.x - vessel.x) {
+                vessel.y += 1 + vessel.movespeed/3;
+            } else if (target.y - vessel.y < target.x - vessel.x) {
+                vessel.x += 1 + vessel.movespeed/3;
+            } else {
+                vessel.x += 1 + vessel.movespeed/3;
+                vessel.y += 1 + vessel.movespeed/3;
+            }
+        }
+    }
+
     birdHit(bird) {
         //temporarily hide the bird
         bird.alpha = 0;
@@ -278,11 +325,11 @@ class Play extends Phaser.Scene {
         var num = Phaser.Math.Between(0,2);
         switch (num) {
             case 0:
-                this.sound.play('sfx_hit_bird1');
+                this.sound.play('sfx_hit_bird1', { volume: 0.25 });
             case 1:
-                this.sound.play('sfx_hit_bird2');
+                this.sound.play('sfx_hit_bird2', { volume: 0.25 });
             case 2:
-                this.sound.play('sfx_hit_bird3');
+                this.sound.play('sfx_hit_bird3', { volume: 0.25 });
         }
     }
 
@@ -290,11 +337,11 @@ class Play extends Phaser.Scene {
         var num = Phaser.Math.Between(0,2);
         switch (num) {
             case 0:
-                this.sound.play('sfx_ufo_explode1');
+                this.sound.play('sfx_ufo_explode1', { volume: 0.25 });
             case 1:
-                this.sound.play('sfx_ufo_explode2');
+                this.sound.play('sfx_ufo_explode2', { volume: 0.25 });
             case 2:
-                this.sound.play('sfx_ufo_explode3');
+                this.sound.play('sfx_ufo_explode3', { volume: 0.25 });
         }
     }
 }

@@ -1,6 +1,8 @@
 //Elijah Rossman
 //4/16/21
-//18 Hours so far
+//26 Hours so far
+//I am coming to the understanding that the scope of project that I laid out was extremely ambitious and doesn't allow me to polish my game very much.
+//I am dipping into the grace period to make sure I turn in a finished product that can accomplish my base goals that I set out for my game.
 
 //game configuration
 let config = {

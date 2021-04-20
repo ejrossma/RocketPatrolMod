@@ -25,8 +25,23 @@ class Menu extends Phaser.Scene {
         //load images
         this.load.image('title', './assets/final_title_fp.png');
         this.load.image('background', './assets/menu_background.png');
-        this.load.image('tomato', './assets/tomato.png');
-        this.load.image('rocket', './assets/rocket.png'); 
+        this.load.image('tomato', './assets/tomato_small.png');
+        this.load.image('rocket', './assets/rocket.png');
+        
+        //load sprites
+        this.load.spritesheet('bird1', './assets/bird_fly_cycle.png', {
+            frameWidth: 48,
+            frameHeight: 48,
+            startFrame: 0,
+            endFrame: 4
+        });
+        this.load.spritesheet('ufo', './assets/simple_ufo.png', {
+            frameWidth: 64,
+            frameHeight: 64,
+            startFrame: 0,
+            endFrame: 2
+        });
+
     }
     create() {
         //add background
@@ -52,20 +67,20 @@ class Menu extends Phaser.Scene {
         this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding - 25, 'Use ← → arrows to move & (F) to fire', menuConfig).setOrigin(0.5);
         this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding + 25, 'Press ← for Easy or → for Hard', menuConfig).setOrigin(0.5);
         this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding + 75, 'Shoot    &    to rack up points', menuConfig).setOrigin(0.5);
-        this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding + 125, 'Protect your   from    &    ', menuConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding + 125, 'Protect your   from    ', menuConfig).setOrigin(0.5);
 
         //line 4 tip images
-        this.add.image(game.config.width/2 - 7, game.config.height/2 + borderUISize + borderPadding + 123, 'tomato').setOrigin(0.5);
-        this.add.image(game.config.width/2 + 115, game.config.height/2 + borderUISize + borderPadding + 123, 'rocket').setOrigin(0.5);
-        this.add.image(game.config.width/2 + 200, game.config.height/2 + borderUISize + borderPadding + 123, 'rocket').setOrigin(0.5);
+        this.add.image(game.config.width/2 + 33, game.config.height/2 + borderUISize + borderPadding + 125, 'tomato').setOrigin(0.5);
+        this.bird1 = this.add.sprite(game.config.width/2 + 160, game.config.height/2 + borderUISize + borderPadding + 130, 'bird1').setOrigin(0.5);
 
         //line 3 tip images
-        this.add.image(game.config.width/2 - 58, game.config.height/2 + borderUISize + borderPadding + 73, 'rocket').setOrigin(0.5);
-        this.add.image(game.config.width/2 - 143, game.config.height/2 + borderUISize + borderPadding + 73, 'rocket').setOrigin(0.5);
+        this.bird = this.add.sprite(game.config.width/2 - 145, game.config.height/2 + borderUISize + borderPadding + 80, 'bird1').setOrigin(0.5);
+        this.ufo1 = this.add.sprite(game.config.width/2 - 55, game.config.height/2 + borderUISize + borderPadding + 75, 'ufo').setOrigin(0.5);
 
         //define keys
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+
     }
 
     update() {
@@ -76,7 +91,7 @@ class Menu extends Phaser.Scene {
                 ufoSpeed: 1,
                 gameTimer: 60000
             }
-            this.sound.play('sfx_select');
+            this.sound.play('sfx_select', { volume: 0.25 });
             this.scene.start('playScene');
         }
         if (Phaser.Input.Keyboard.JustDown(keyRIGHT)) {
@@ -86,7 +101,7 @@ class Menu extends Phaser.Scene {
                 ufoSpeed: 2,
                 gameTimer: 45000
             }
-            this.sound.play('sfx_select');
+            this.sound.play('sfx_select', { volume: 0.25 });
             this.scene.start('playScene');
         }
     }
