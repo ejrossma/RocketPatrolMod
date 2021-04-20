@@ -29,12 +29,14 @@ class Play extends Phaser.Scene {
             endFrame: 9
         });
 
+        //Music from: https://www.youtube.com/watch?v=stpvwGUt_LE&ab_channel=RoyaltyFreeMusic-NoCopyrightMusic
         this.load.audio('music', './assets/Farm_patrol_background_music.mp3');
     }
 
     create() { //whatever is made first gets put furthest back
         //music
-        this.sound.play('music', { loop: -1, volume: 0.25});
+        this.music = this.sound.add('music');
+        this.music.play({ loop: -1, volume: 0.25});
 
         //scrolling background
         this.sky = this.add.tileSprite(borderUISize, borderUISize + borderPadding + 5, 576, 175, 'sky').setOrigin(0,0);
@@ -171,10 +173,12 @@ class Play extends Phaser.Scene {
 
     update() {
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)) {
+            this.music.stop();
             this.scene.restart();
             this.anims.resumeAll();
         }
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT)) {
+            this.music.stop();
             this.scene.start('menuScene');
         }
         
