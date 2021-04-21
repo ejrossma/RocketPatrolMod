@@ -15,6 +15,13 @@ class Play extends Phaser.Scene {
         this.load.image('sky', './assets/sky_back.png');
         this.load.image('banner', './assets/banner.png');
         this.load.image('title', './assets/final_title_fp.png');
+        
+        this.load.spritesheet('bullet', './assets/bullet.png', {
+            frameWidth: 8,
+            frameHeight: 8,
+            startFrame: 0,
+            endFrame: 2
+        });
 
         this.load.spritesheet('poof', './assets/bird_poof.png', {
             frameWidth: 48,
@@ -49,8 +56,29 @@ class Play extends Phaser.Scene {
         this.add.image(game.config.width/4, borderUISize + borderPadding - 4, 'title').setOrigin(0,0);
         
         //add rocket (player 1)
-        this.p1Rocket = new Rocket(this, game.config.width/2, game.config.height - 
-        borderUISize - borderPadding, 'rocket').setOrigin(0.5, 0);
+        this.farmer = new Farmer(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'rocket').setOrigin(0.5, 0);
+
+        //add bullet
+        this.anims.create({
+            key: 'shoot',
+            frames: this.anims.generateFrameNumbers('bullet', {
+                start: 0,
+                end: 2,
+                first: 0
+            }),
+            frameRate: 10,
+            repeat: -1,
+            yoyo: true
+        });
+        this.bullet = new Bullet(this, game.config.width/2, game.config.height - borderUISize - borderPadding - 40, 'bullet').setOrigin(0.5, 0);
+        this.bullet.anims.play('shoot');
+        this.bullet.alpha = 0;
+
+        //add tomatoes
+        this.tomato1 = new Tomato(this, 90, 400, 'tomato', 0).setOrigin(0,0);
+        this.tomato2 = new Tomato(this, 200, 400, 'tomato', 0).setOrigin(0,0);
+        this.tomato3 = new Tomato(this, 420, 400, 'tomato', 0).setOrigin(0,0);
+        this.tomato4 = new Tomato(this, 525, 400, 'tomato', 0).setOrigin(0,0);
 
         //add ufo
         this.anims.create({
@@ -64,7 +92,7 @@ class Play extends Phaser.Scene {
             repeat: -1,
             yoyo: true
         });
-        this.ufo = new UFO(this, 0, borderUISize * 3, 'ufo', 0, 30).setOrigin(0,0);
+        this.ufo = new UFO(this, 0, borderUISize * 3, 'ufo', 0, 40).setOrigin(0,0);
         this.ufo.anims.play('ufo_fly');
 
         //add birds (x3)
@@ -79,24 +107,17 @@ class Play extends Phaser.Scene {
             repeat: -1,
             yoyo: true
         });
-        this.bird01 = new Bird(this, 0, borderUISize * 4, 'bird1', 0, 50, 1.75).setOrigin(0,0);
+        this.bird01 = new Bird(this, 0, borderUISize * 4, 'bird1', 0, 30, 1.75).setOrigin(0,0);
         this.bird01.anims.play('bird_fly');
         this.bird02 = new Bird(this, 0, borderUISize * 5 + borderPadding * 2, 'bird1', 0, 20, 1.5).setOrigin(0,0);
         this.bird02.anims.play('bird_fly');
         this.bird03 = new Bird(this, 0, borderUISize * 6 + borderPadding * 4, 'bird1', 0, 10, 1.25).setOrigin(0,0);
-        this.bird03.anims.play('bird_fly');
-
-
-        //add tomatoes
-        this.tomato1 = new Tomato(this, 90, 400, 'tomato', 0).setOrigin(0,0);
-        this.tomato2 = new Tomato(this, 200, 400, 'tomato', 0).setOrigin(0,0);
-        this.tomato3 = new Tomato(this, 420, 400, 'tomato', 0).setOrigin(0,0);
-        this.tomato4 = new Tomato(this, 525, 400, 'tomato', 0).setOrigin(0,0);
-        
+        this.bird03.anims.play('bird_fly');    
 
         //define keys
         keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
+        keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
 
@@ -189,8 +210,17 @@ class Play extends Phaser.Scene {
             //update background
             this.sky.tilePositionX -= starspeed/8;
 
-            //update rocket
-            this.p1Rocket.update();
+            //update tomatoes
+            this.tomato1.update(actualTime);
+            this.tomato2.update(actualTime);
+            this.tomato3.update(actualTime);
+            this.tomato4.update(actualTime);
+
+            //update farmer
+            this.farmer.update();
+
+            //update bullet
+            this.bullet.update();
 
             //update spaceship
             this.bird01.update();
@@ -200,29 +230,28 @@ class Play extends Phaser.Scene {
             //update UFO
             this.ufo.update();
 
-            //update tomatoes
-            this.tomato1.update(actualTime);
-            this.tomato2.update(actualTime);
-            this.tomato3.update(actualTime);
-            this.tomato4.update(actualTime);
         }
 
         //check collision
-        if (this.checkCollision(this.p1Rocket, this.bird01)) {
-            this.p1Rocket.reset();
-            this.birdHit(this.bird01);
-        }
-        if (this.checkCollision(this.p1Rocket, this.bird02)) {
-            this.p1Rocket.reset();
-            this.birdHit(this.bird02);
-        }
-        if (this.checkCollision(this.p1Rocket, this.bird03)) {
-            this.p1Rocket.reset();
-            this.birdHit(this.bird03);
-        }
-        if (this.checkCollision(this.p1Rocket, this.ufo)) {
-            this.p1Rocket.reset();
-            this.shipSmallExplode(this.ufo);
+        if (this.bullet.alpha == 1) {
+
+            if (this.checkCollision(this.bullet, this.bird01)) {
+                this.bullet.reset();
+                this.birdHit(this.bird01);
+            }
+            if (this.checkCollision(this.bullet, this.bird02)) {
+                this.bullet.reset();
+                this.birdHit(this.bird02);
+            }
+            if (this.checkCollision(this.bullet, this.bird03)) {
+                this.bullet.reset();
+                this.birdHit(this.bird03);
+            }
+            if (this.checkCollision(this.bullet, this.ufo)) {
+                this.bullet.reset();
+                this.ufoExplode(this.ufo);
+            }
+
         }
     }
 
@@ -308,7 +337,7 @@ class Play extends Phaser.Scene {
         this.birdSound();
     }
 
-    shipSmallExplode(ufo) {
+    ufoExplode(ufo) {
         //temporarily hide the ufo
         ufo.alpha = 0;
         //create explosion sprite

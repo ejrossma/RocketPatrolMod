@@ -22,7 +22,7 @@ let starspeed = 4;
 let highscore = 0;
 
 //reserve keyboard bindings
-let keyF, keyR, keyLEFT, keyRIGHT;
+let keyF, keyR, keyD, keyE, keyH, keyLEFT, keyRIGHT;
 
 /*POINTS BREAKDOWN -------------------------- 
 
@@ -32,7 +32,7 @@ let keyF, keyR, keyLEFT, keyRIGHT;
     Randomize Ship Direction: 5pts                                        (Total: 10)
         All enemies spawn randomly on either the right or left sides.
 
-    Add Background Music: 5pts                                            (Total: 15) NEED TO DO
+    Add Background Music: 5pts                                            (Total: 15)
         I hope you like the music.
 
     Create New Scrolling Sprite for Background: 5pts                      (Total: 20)
@@ -43,7 +43,7 @@ let keyF, keyR, keyLEFT, keyRIGHT;
         Where there is no cap on how many projectiles the player can shoot 
         & the speed increases.
 
-    Animated Sprite for Enemies: 10pts                                    (Total: 35) NEED TO DO
+    Animated Sprite for Enemies: 10pts                                    (Total: 35)
         Changed Enemy Sprites and Animated them.
 
     New Title Screen: 10pts                                               (Total: 45)
@@ -67,7 +67,7 @@ let keyF, keyR, keyLEFT, keyRIGHT;
         Space Patrol -> Farm Patrol. I changed space patrol to be based on a farmer and 
         the various things that try to steal their crops.
         
-    (Okayed by Nathan) Implement Crops & Enemies Steal Crops: 25pts       (Total: 190) NEED TO DO
+    (Okayed by Nathan) Implement Crops & Enemies Steal Crops: 25pts       (Total: 190)
         The enemies randomly decide whether they are going to attempt to steal a crop.
         Then they begin to take it and the player has a window to stop them before they lose points.
 */

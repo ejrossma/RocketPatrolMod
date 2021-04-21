@@ -47,7 +47,7 @@ class Menu extends Phaser.Scene {
         //add background
         this.add.image(0, 0, 'background').setOrigin(0,0);
         //add title
-        this.add.image(game.config.width/2, game.config.height/2 - 50, 'title').setOrigin(0.5);
+        this.add.image(game.config.width/2, game.config.height/2 - 100, 'title').setOrigin(0.5);
 
         let menuConfig = {
             fontFamily: 'Courier',
@@ -64,8 +64,9 @@ class Menu extends Phaser.Scene {
 
         //show menu text
         //this.add.text(game.config.width/2, game.config.height/2 - borderUISize - borderPadding, 'ROCKET PATROL', menuConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding - 75, 'Use D to change shooting angle', menuConfig).setOrigin(0.5);
         this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding - 25, 'Use ← → arrows to move & (F) to fire', menuConfig).setOrigin(0.5);
-        this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding + 25, 'Press ← for Easy or → for Hard', menuConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding + 25, 'Press E for Easy or H for Hard', menuConfig).setOrigin(0.5);
         this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding + 75, 'Shoot    &    to rack up points', menuConfig).setOrigin(0.5);
         this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding + 125, 'Protect your   from    ', menuConfig).setOrigin(0.5);
 
@@ -80,11 +81,13 @@ class Menu extends Phaser.Scene {
         //define keys
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+        keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
+        keyH = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.H);
 
     }
 
     update() {
-        if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
+        if (Phaser.Input.Keyboard.JustDown(keyE)) {
             //easy mode
             game.settings = {
                 birdSpeed: 1,
@@ -94,7 +97,7 @@ class Menu extends Phaser.Scene {
             this.sound.play('sfx_select', { volume: 0.25 });
             this.scene.start('playScene');
         }
-        if (Phaser.Input.Keyboard.JustDown(keyRIGHT)) {
+        if (Phaser.Input.Keyboard.JustDown(keyH)) {
             //easy mode
             game.settings = {
                 birdSpeed: 2,

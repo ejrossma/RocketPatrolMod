@@ -7,10 +7,11 @@ class Bird extends Phaser.GameObjects.Sprite {
         this.movespeed = game.settings.birdSpeed * speed; //pixels per frame
         this.dir = Phaser.Math.Between(0,1); //choose a random direction
         this.startY = this.y;
-        this.reset();
         this.stealing = false;
         this.targetTomato;
         this.holdingTomato;
+        this.stealNum = Phaser.Math.Between(0,2);
+        this.reset();
     }
 
     update() {
@@ -59,6 +60,8 @@ class Bird extends Phaser.GameObjects.Sprite {
     //position reset
     reset() {
         this.dir = Phaser.Math.Between(0,1);
+        this.stealNum = Phaser.Math.Between(0,2);
+        var tomatoName = this.chooseTomato();
         //moving left
         if (this.dir == 1) {
             this.x = game.config.width + 5;
@@ -68,7 +71,7 @@ class Bird extends Phaser.GameObjects.Sprite {
             if (this.holdingTomato) {
                 this.holdingTomato = false;
                 this.targetTomato.beingTaken = false;
-            }       
+            }
         } else { //moving right
             this.x = 0 - 5;
             this.y = this.startY;
@@ -78,11 +81,41 @@ class Bird extends Phaser.GameObjects.Sprite {
                 this.holdingTomato = false;
                 this.targetTomato.beingTaken = false;
             }
-        }   
+        }
+        if (this.stealNum == 1) {
+            this.stealTomato(tomatoName);
+        }
     }
 
     stealTomato(tomato) {
         this.stealing = true;
         this.targetTomato = tomato;
+    }
+
+    chooseTomato() {
+        let currMato = this.scene.tomato1;
+        let num = Phaser.Math.Between(0, 3);
+        if (num == 0) {
+            currMato = this.scene.tomato1;
+        } else if (num == 1) {
+            currMato = this.scene.tomato2;
+        } else if (num == 2) {
+            currMato = this.scene.tomato3;
+        } else {
+            currMato = this.scene.tomato4;
+        }
+        while (!currMato.targettable) {
+            num = Phaser.Math.Between(0, 3);
+            if (num == 0) {
+                currMato = this.scene.tomato1;
+            } else if (num == 1) {
+                currMato = this.scene.tomato2;
+            } else if (num == 2) {
+                currMato = this.scene.tomato3;
+            } else {
+                currMato = this.scene.tomato4;
+            }
+        }
+        return currMato;
     }
 }
