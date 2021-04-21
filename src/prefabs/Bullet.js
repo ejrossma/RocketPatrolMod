@@ -15,11 +15,11 @@ class Bullet extends Phaser.GameObjects.Sprite {
         //follow farmer
         if (!this.isFiring) {
             if (this.scene.farmer.angle == 0) {
-                this.x = this.scene.farmer.x  - 40;
+                this.x = this.scene.farmer.x  - 10;
             } else if (this.scene.farmer.angle == 1) {
                 this.x = this.scene.farmer.x;
             } else {
-                this.x = this.scene.farmer.x + 40;
+                this.x = this.scene.farmer.x + 10;
             }   
         }
 

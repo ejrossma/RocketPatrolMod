@@ -26,7 +26,7 @@ class Menu extends Phaser.Scene {
         this.load.image('title', './assets/final_title_fp.png');
         this.load.image('background', './assets/menu_background.png');
         this.load.image('tomato', './assets/tomato_small.png');
-        this.load.image('rocket', './assets/rocket.png');
+        this.load.image('farmer', './assets/farmer.png');
         
         //load sprites
         this.load.spritesheet('bird1', './assets/bird_fly_cycle.png', {

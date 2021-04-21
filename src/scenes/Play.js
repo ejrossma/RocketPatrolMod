@@ -55,8 +55,6 @@ class Play extends Phaser.Scene {
         //title on top of banner
         this.add.image(game.config.width/4, borderUISize + borderPadding - 4, 'title').setOrigin(0,0);
         
-        //add rocket (player 1)
-        this.farmer = new Farmer(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'rocket').setOrigin(0.5, 0);
 
         //add bullet
         this.anims.create({
@@ -79,6 +77,9 @@ class Play extends Phaser.Scene {
         this.tomato2 = new Tomato(this, 200, 400, 'tomato', 0).setOrigin(0,0);
         this.tomato3 = new Tomato(this, 420, 400, 'tomato', 0).setOrigin(0,0);
         this.tomato4 = new Tomato(this, 525, 400, 'tomato', 0).setOrigin(0,0);
+
+        //add farmer (player 1)
+        this.farmer = new Farmer(this, game.config.width/2, game.config.height - borderUISize - 56, 'farmer').setOrigin(0.5, 0);
 
         //add ufo
         this.anims.create({
