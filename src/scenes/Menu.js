@@ -92,7 +92,8 @@ class Menu extends Phaser.Scene {
             game.settings = {
                 birdSpeed: 1,
                 ufoSpeed: 1,
-                gameTimer: 60000
+                gameTimer: 60000,
+                bulletSpeed: 3
             }
             this.sound.play('sfx_select', { volume: 0.25 });
             this.scene.start('playScene');
@@ -102,7 +103,8 @@ class Menu extends Phaser.Scene {
             game.settings = {
                 birdSpeed: 2,
                 ufoSpeed: 2,
-                gameTimer: 45000
+                gameTimer: 45000,
+                bulletSpeed: 4
             }
             this.sound.play('sfx_select', { volume: 0.25 });
             this.scene.start('playScene');

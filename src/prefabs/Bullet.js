@@ -6,7 +6,7 @@ class Bullet extends Phaser.GameObjects.Sprite {
         //add object to existing scene
         scene.add.existing(this);
         this.isFiring = false; //track firing status
-        this.moveSpeed = 3; //pixels per frame
+        this.moveSpeed = game.settings.bulletSpeed; //pixels per frame
         this.scene = scene;
         this.angle = 1;
     }

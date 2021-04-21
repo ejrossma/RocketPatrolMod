@@ -118,6 +118,7 @@ class Play extends Phaser.Scene {
         keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+        keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M);
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
 
@@ -174,7 +175,7 @@ class Play extends Phaser.Scene {
             if (this.p1Score > highscore) { highscore = this.p1Score; }
             this.add.text(game.config.width/2, game.config.height/2 - 64, `HIGH SCORE: ${highscore}`, scoreConfig).setOrigin(0.5);
             this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
-            this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or ← for Menu', scoreConfig).setOrigin(0.5);
+            this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or M for Menu', scoreConfig).setOrigin(0.5);
             this.timeText.text = 'Time: 0';
             this.gameOver = true;
             this.anims.pauseAll();
@@ -198,7 +199,7 @@ class Play extends Phaser.Scene {
             this.scene.restart();
             this.anims.resumeAll();
         }
-        if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT)) {
+        if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyM)) {
             this.scene.start('menuScene');
         }
         

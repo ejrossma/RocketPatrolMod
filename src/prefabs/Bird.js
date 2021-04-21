@@ -10,7 +10,7 @@ class Bird extends Phaser.GameObjects.Sprite {
         this.stealing = false;
         this.targetTomato;
         this.holdingTomato;
-        this.stealNum = Phaser.Math.Between(0,2);
+        this.stealNum = Phaser.Math.Between(0,1);
         this.reset();
     }
 
@@ -60,7 +60,7 @@ class Bird extends Phaser.GameObjects.Sprite {
     //position reset
     reset() {
         this.dir = Phaser.Math.Between(0,1);
-        this.stealNum = Phaser.Math.Between(0,2);
+        this.stealNum = Phaser.Math.Between(0,1);
         var tomatoName = this.chooseTomato();
         //moving left
         if (this.dir == 1) {
