@@ -16,21 +16,24 @@ class Bullet extends Phaser.GameObjects.Sprite {
         if (!this.isFiring) {
             if (this.scene.farmer.angle == 0) {
                 this.x = this.scene.farmer.x  - 10;
+                this.angle = 0;
             } else if (this.scene.farmer.angle == 1) {
                 this.x = this.scene.farmer.x;
+                this.angle = 1;
             } else {
                 this.x = this.scene.farmer.x + 10;
+                this.angle = 2;
             }   
         }
 
         //NEED TO WORK ON MOVEMENT
         // if fired, move rocket up
-        if (this.isFiring && this.scene.farmer.angle == 1) { //angle 1 is up
+        if (this.isFiring && this.angle == 1) { //angle 1 is up
             this.y -= this.moveSpeed;
-        } else if (this.isFiring && this.scene.farmer.angle == 0) { //angle 0 is left
+        } else if (this.isFiring && this.angle == 0) { //angle 0 is left
             this.y -= this.moveSpeed;
             this.x -= this.moveSpeed;
-        } else if (this.isFiring && this.scene.farmer.angle == 2) { //angle 2 is right
+        } else if (this.isFiring && this.angle == 2) { //angle 2 is right
             this.y -= this.moveSpeed;
             this.x += this.moveSpeed;
         }
