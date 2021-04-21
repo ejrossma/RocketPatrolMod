@@ -191,6 +191,9 @@ class Play extends Phaser.Scene {
         this.add.rectangle(0, 0, borderUISize, game.config.height, 0x795548).setOrigin(0,0);
         this.add.rectangle(game.config.width - borderUISize, 0, borderUISize, 
         game.config.height, 0x795548).setOrigin(0,0);
+
+        //if switch between hard and easy
+        this.anims.resumeAll();
         
     }
 
