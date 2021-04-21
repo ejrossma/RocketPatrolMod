@@ -54,7 +54,7 @@ let keyF, keyR, keyD, keyE, keyH, keyM, keyLEFT, keyRIGHT;
     New Spaceship Type: 20pts                                             (Total: 80)
         Made a UFO that alternates between moving up and down.
 
-    Create and Implement a New Weapon: 20pts                              (Total: 100) NEED TO DO
+    Create and Implement a New Weapon: 20pts                              (Total: 100)
         The farmer wields a gun to take down the birds who are stealing his crops.
         The player aims it and then shoots a projectile which they cannot control.
 
