@@ -101,8 +101,8 @@ class Menu extends Phaser.Scene {
         if (Phaser.Input.Keyboard.JustDown(keyH)) {
             //easy mode
             game.settings = {
-                birdSpeed: 2,
-                ufoSpeed: 2,
+                birdSpeed: 1.5,
+                ufoSpeed: 1.5,
                 gameTimer: 45000,
                 bulletSpeed: 4
             }

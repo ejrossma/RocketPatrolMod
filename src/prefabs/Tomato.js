@@ -24,12 +24,13 @@ class Tomato extends Phaser.GameObjects.Sprite {
         //if not on ground and no longer being taken then needs to fall
         if (!this.onGround && !this.beingTaken) this.y += this.fallSpeed;
 
-        if (this.x <= 0 - this.width + borderUISize || this.x >= game.config.width + borderUISize) this.reset(time);
+        if (this.x <= 0 - this.width - borderUISize || this.x >= game.config.width + borderUISize) this.reset(time);
 
         if (this.resetting && time - this.startTime == 3) {
             this.alpha = 1;
             this.targettable = true;
             this.resetting = false;
+            this.startTime = 0;
         }
     }
 
@@ -41,14 +42,8 @@ class Tomato extends Phaser.GameObjects.Sprite {
         this.alpha = 0.5;
         this.resetting = true;
         this.startTime = currTime;
-        this.scene.p1Score -= 20;
+        this.scene.p1Score -= 25;
         this.scene.scoreLeft.text = `PTS: ${this.scene.p1Score}`;
-        /*
-        this.clock = this.time.delayedCall(3000, () => {
-            this.alpha = 1;
-            this.targettable = true;
-        }, null, this);
-        */
     }
 
 }

@@ -1,6 +1,6 @@
 //Elijah Rossman
 //4/16/21
-//26 Hours so far
+//30 Hours
 //I am coming to the understanding that the scope of project that I laid out was extremely ambitious and doesn't allow me to polish my game very much.
 //I am dipping into the grace period to make sure I turn in a finished product that can accomplish my base goals that I set out for my game.
 
@@ -22,7 +22,7 @@ let starspeed = 4;
 let highscore = 0;
 
 //reserve keyboard bindings
-let keyF, keyR, keyD, keyE, keyH, keyLEFT, keyRIGHT;
+let keyF, keyR, keyD, keyE, keyH, keyM, keyLEFT, keyRIGHT;
 
 /*POINTS BREAKDOWN -------------------------- 
 
@@ -38,36 +38,31 @@ let keyF, keyR, keyD, keyE, keyH, keyLEFT, keyRIGHT;
     Create New Scrolling Sprite for Background: 5pts                      (Total: 20)
         I made a nice sky with some clouds.
 
-    Implement Speed Increase: 5pts                                        (Total: 25) NEED TO DO
-        Added 'Rapid Fire' for the last 10 seconds. 
-        Where there is no cap on how many projectiles the player can shoot 
-        & the speed increases.
-
-    Animated Sprite for Enemies: 10pts                                    (Total: 35)
+    Animated Sprite for Enemies: 10pts                                    (Total: 30)
         Changed Enemy Sprites and Animated them.
 
-    New Title Screen: 10pts                                               (Total: 45)
+    New Title Screen: 10pts                                               (Total: 40)
         Made a Title Screen Using Pixel Art :D
 
-    Display The Time Remaining: 10pts                                     (Total: 55)
+    Display The Time Remaining: 10pts                                     (Total: 50)
         I put the timer in the top right.                                 
 
-    Create New Explosion SFX: 10pts                                       (Total: 65)
+    Create New Explosion SFX: 10pts                                       (Total: 60)
         I used BFXR to make 3 new ufo explosion sounds
         & 3 new bird hit sounds
 
-    New Spaceship Type: 20pts                                             (Total: 85)
+    New Spaceship Type: 20pts                                             (Total: 80)
         Made a UFO that alternates between moving up and down.
 
-    Create and Implement a New Weapon: 20pts                              (Total: 105) NEED TO DO
+    Create and Implement a New Weapon: 20pts                              (Total: 100) NEED TO DO
         The farmer wields a gun to take down the birds who are stealing his crops.
         The player aims it and then shoots a projectile which they cannot control.
 
-    Redesign Game's Design: 60pts                                         (Total: 165)
+    Redesign Game's Design: 60pts                                         (Total: 160)
         Space Patrol -> Farm Patrol. I changed space patrol to be based on a farmer and 
         the various things that try to steal their crops.
         
-    (Okayed by Nathan) Implement Crops & Enemies Steal Crops: 25pts       (Total: 190)
+    (Okayed by Nathan) Implement Crops & Enemies Steal Crops: 25pts       (Total: 185)
         The enemies randomly decide whether they are going to attempt to steal a crop.
         Then they begin to take it and the player has a window to stop them before they lose points.
 */

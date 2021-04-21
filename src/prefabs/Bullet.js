@@ -36,7 +36,6 @@ class Bullet extends Phaser.GameObjects.Sprite {
         }
         //NEED TO WORK ON BOUNDS
         if (this.isFiring && (this.y <= borderUISize * 3 + borderPadding || this.x >= game.config.width - borderUISize + borderPadding || this.x <= borderUISize + borderPadding)) {
-            console.log("resetting");
             this.reset();
         }
     }

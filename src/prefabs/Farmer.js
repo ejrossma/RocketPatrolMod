@@ -21,14 +21,12 @@ class Farmer extends Phaser.GameObjects.Sprite {
         }
 
         if (Phaser.Input.Keyboard.JustDown(keyD)) {
-            console.log("hi");
             if (this.angle == 0 || this.angle == 2) {
                 this.angle = 1;
             } else {
                 this.diff *= -1;
                 this.angle += this.diff;
             }
-            console.log(this.angle);
         }
 
         //fire button
