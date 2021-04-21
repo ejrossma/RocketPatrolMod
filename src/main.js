@@ -10,6 +10,9 @@ let config = {
     width: 640,
     height: 480,
     scene: [ Menu, Play ],
+    scale: {
+        autoCenter: Phaser.Scale.CENTER_BOTH
+    },
 }
 
 let game = new Phaser.Game(config);
